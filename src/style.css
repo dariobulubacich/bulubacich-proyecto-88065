@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
-  background-color: #222;
+  background-color: #a39f9f;
   color: white;
 }
 
@@ -54,4 +54,43 @@
 .item-list-container h2 {
   font-size: 24px;
   color: #333;
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+.item-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+.item-card img {
+  max-width: 100%;
+}
+.btn-detail,
+.btn-add {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.item-detail {
+  max-width: 400px;
+  margin: 30px auto;
+  text-align: center;
+}
+.counter {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+.not-found {
+  text-align: center;
+  margin-top: 50px;
 }
