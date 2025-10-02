@@ -1,12 +1,25 @@
-import React from "react";
+import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 const CartWidget = () => {
+  const { totalItems } = useCart();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/cart"); // Navega a la página del carrito
+  };
+
   return (
-    <div className="cart-widget">
+    <div
+      style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+      onClick={handleClick}
+    >
       <span role="img" aria-label="cart">
         🛒
       </span>
-      <span className="cart-count">3</span>
+      {totalItems > 0 && (
+        <span style={{ marginLeft: "5px" }}>{totalItems}</span>
+      )}
     </div>
   );
 };

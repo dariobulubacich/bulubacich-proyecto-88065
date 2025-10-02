@@ -1,12 +1,13 @@
-import React from "react";
 import Item from "./Item.Jsx";
-
-const ItemList = ({ items }) => (
-  <div className="item-grid">
-    {items.map((product) => (
-      <Item key={product.id} product={product} />
-    ))}
-  </div>
-);
+const ItemList = ({ items }) => {
+  if (!items.length) return <p>No hay productos para mostrar.</p>;
+  return (
+    <div className="item-grid">
+      {items.map((p) => (
+        <Item key={p.id} product={p} />
+      ))}
+    </div>
+  );
+};
 
 export default ItemList;

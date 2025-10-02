@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import ItemCount from "./ItemCount";
+import { useCart } from "../context/CartContext";
 
 const ItemDetail = ({ product }) => {
-  const [count, setCount] = useState(1);
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = (qty) => {
+    addItem(product, qty);
+    setAdded(true);
+  };
 
   return (
     <div className="item-detail">
-      <img src={product.img} alt={product.name} />
-      <h2>{product.name}</h2>
+      <img className="img-itemdetail" src={product.img} alt={product.title} />
+      <h2>{product.title}</h2>
+      <p>{product.description}</p>
       <p>Precio: ${product.price}</p>
-      <div className="counter">
-        <button onClick={() => setCount((c) => Math.max(1, c - 1))}>-</button>
-        <span>{count}</span>
-        <button onClick={() => setCount((c) => c + 1)}>+</button>
-      </div>
-      <button className="btn-add">Agregar al carrito</button>
+      <p>Stock: {product.stock}</p>
+
+      {!added ? (
+        <ItemCount stock={product.stock} initial={1} onAdd={handleAdd} />
+      ) : (
+        <>
+          <p>Agregado al carrito ✅</p>
+          <button
+            onClick={() => (window.location.href = "/cart")}
+            className="btn-go-cart"
+          >
+            Ir al carrito
+          </button>
+        </>
+      )}
     </div>
   );
 };
