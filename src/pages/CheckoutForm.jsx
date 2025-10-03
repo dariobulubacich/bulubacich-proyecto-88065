@@ -24,12 +24,11 @@ const CheckoutForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setError(""); // resetear error
+    setError("");
 
     try {
-      // 1️⃣ Validar stock antes de crear la orden
       for (let item of cart) {
-        const productRef = doc(db, "products", item.id.toString()); // usar doc.id si guardaste Firestore ID
+        const productRef = doc(db, "products", item.id.toString());
         const snapshot = await getDoc(productRef);
         if (!snapshot.exists())
           throw new Error(`El producto ${item.title} no existe.`);
@@ -41,7 +40,6 @@ const CheckoutForm = () => {
         }
       }
 
-      // 2️⃣ Crear la orden
       const order = {
         buyer,
         items: cart,
@@ -50,7 +48,6 @@ const CheckoutForm = () => {
       };
       const docRef = await addDoc(collection(db, "orders"), order);
 
-      // 3️⃣ Descontar stock
       const updateStockPromises = cart.map((item) => {
         const productRef = doc(db, "products", item.id.toString());
         return updateDoc(productRef, {
@@ -59,7 +56,6 @@ const CheckoutForm = () => {
       });
       await Promise.all(updateStockPromises);
 
-      // 4️⃣ Guardar ID de orden y limpiar carrito
       setOrderId(docRef.id);
       clearCart();
     } catch (err) {

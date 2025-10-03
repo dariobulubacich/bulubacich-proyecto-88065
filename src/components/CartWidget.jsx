@@ -6,7 +6,7 @@ const CartWidget = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/cart"); // Navega a la página del carrito
+    navigate("/cart");
   };
 
   return (

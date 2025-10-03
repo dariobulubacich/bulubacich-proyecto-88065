@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { categoryId } = useParams(); // Para filtrar por categoría si se pasa en la URL
+  const { categoryId } = useParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,15 +21,14 @@ const ItemListContainer = () => {
           const data = doc.data();
           return {
             id: data.id,
-            title: data.title || data.name || "Sin título", // garantizar title
-            img: data.img || "/placeholder.png", // garantizar img
-            price: Number(data.price) || 0, // convertir price a número
+            title: data.title || data.name || "Sin título",
+            img: data.img || "/placeholder.png",
+            price: Number(data.price) || 0,
             stock: Number(data.stock) || 0,
             category: data.category || "general",
           };
         });
 
-        // Si hay categoría en la URL, filtramos
         const filteredProducts = categoryId
           ? productsData.filter(
               (p) => p.category.toLowerCase() === categoryId.toLowerCase()
@@ -45,7 +44,7 @@ const ItemListContainer = () => {
     };
 
     fetchProducts();
-  }, [categoryId]); // se ejecuta de nuevo si cambia la categoría
+  }, [categoryId]);
 
   if (loading) return <p>Cargando productos...</p>;
   if (products.length === 0) return <p>No hay productos disponibles.</p>;

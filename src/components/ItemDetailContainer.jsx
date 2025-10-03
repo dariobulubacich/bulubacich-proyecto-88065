@@ -12,10 +12,7 @@ const ItemDetailContainer = () => {
   useEffect(() => {
     setLoading(true);
 
-    const q = query(
-      collection(db, "products"),
-      where("id", "==", Number(id)) // 🔥 busca por el campo `id`
-    );
+    const q = query(collection(db, "products"), where("id", "==", Number(id)));
 
     getDocs(q)
       .then((snapshot) => {
