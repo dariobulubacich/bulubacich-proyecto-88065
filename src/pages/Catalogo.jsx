@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import { useParams } from "react-router-dom";
-import Item from "./Item.jsx";
+import Item from "../components/Item";
 
-const ItemListContainer = () => {
+const Catalogo = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const { categoryId } = useParams();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,22 +18,15 @@ const ItemListContainer = () => {
           const data = doc.data();
           return {
             id: doc.id,
-            title: data.title || data.name || "Sin título",
+            title: data.title || "Sin título",
             img: data.img || "/placeholder.png",
             price: Number(data.price) || 0,
             stock: Number(data.stock) || 0,
             category: data.category || "general",
-            description: data.description || "",
           };
         });
 
-        const filteredProducts = categoryId
-          ? productsData.filter(
-              (p) => p.category.toLowerCase() === categoryId.toLowerCase()
-            )
-          : productsData;
-
-        setProducts(filteredProducts);
+        setProducts(productsData);
       } catch (error) {
         console.error("Error al obtener productos:", error);
       } finally {
@@ -45,13 +35,20 @@ const ItemListContainer = () => {
     };
 
     fetchProducts();
-  }, [categoryId]);
+  }, []);
 
   if (loading) return <p>Cargando productos...</p>;
   if (products.length === 0) return <p>No hay productos disponibles.</p>;
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "20px",
+        justifyContent: "center",
+      }}
+    >
       {products.map((product) => (
         <Item key={product.id} item={product} />
       ))}
@@ -59,4 +56,4 @@ const ItemListContainer = () => {
   );
 };
 
-export default ItemListContainer;
+export default Catalogo;
